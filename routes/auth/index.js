@@ -21,6 +21,8 @@ authRouter.get(
 );
 
 // local routes and register strategy
+
+// Handle POST request to register a new user with local authentication
 authRouter.post("/local/register", async (req, res) => {
   const password = req.body.password;
   const email = req.body.email;
@@ -46,5 +48,9 @@ authRouter.post("/local/register", async (req, res) => {
     });
   }
 });
+
+authRouter.post('/local/login', function handleLocalAuthentication{
+  
+})
 
 module.exports = authRouter;
