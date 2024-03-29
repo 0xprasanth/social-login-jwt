@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const passport = require('passport')
 const authRoutes = require('./routes/auth/')
 const googleStrategy = require('./strategies/google')
+const connection = require('./utils/dbInstance.js')
 
 const passportUtils = require('./utils/passportUtils')
 
@@ -43,6 +44,15 @@ app.get('/', async (req, res) => {
 
 app.use('/auth', authRoutes)
 
-app.listen(8000, () => {
-    console.log('app listening port 8000');
+connection.connect().then(connInfo => {
+    console.log('Connected to DB');
+    app.listen(8000, () => {
+        console.log('app listening port 8000');
+    });
+
+}).catch(err => {
+    console.error("Error connecting to DB");
+    console.error(err);
+    process.exit(1);
 });
+
