@@ -7,7 +7,7 @@ const passport = require('passport')
 const authRoutes = require('./routes/auth/')
 const googleStrategy = require('./strategies/google')
 const connection = require('./utils/dbInstance.js')
-
+const localStrategy = require('./strategies/local')
 const passportUtils = require('./utils/passportUtils')
 
 const app = express();
