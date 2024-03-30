@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth/')
 const googleStrategy = require('./strategies/google')
 const connection = require('./utils/dbInstance.js')
 const localStrategy = require('./strategies/local')
+const twitterStrategy = require('./strategies/twitter')
 const passportUtils = require('./utils/passportUtils')
 
 const app = express();
@@ -29,7 +30,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(passport.initialize());
 app.use(passport.session())
 passport.use(googleStrategy)
-
+passport.use(localStrategy)
+passport.use(twitterStrategy)
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname + '/node_modules/bootstrap/dist')));
 

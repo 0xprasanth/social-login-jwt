@@ -20,6 +20,25 @@ authRouter.get(
   })
 );
 
+
+// request twitter server for auth
+// twitter router and strategy
+authRouter.get(
+  "/twitter",
+  passport.authenticate("twitter")
+);
+
+authRouter.get(
+  "/twitter/callback",
+  passport.authenticate("twitter", {
+    failureRedirect: "/failure",
+    successRedirect: "/",
+  })
+);
+
+
+
+
 // local routes and register strategy
 
 // Handle POST request to register a new user with local authentication
@@ -49,7 +68,26 @@ authRouter.post("/local/register", async (req, res) => {
   }
 });
 
-authRouter.post('/local/login', function handleLocalAuthentication{
+authRouter.post('/local/login', function handleLocalAuthentication(req, res, next){
+  passport.authenticate('local', function(err, user, info){
+
+    // custom logic for our own callback
+    if(err) return next(err);
+    if(!user){
+      return res.status(403).json({
+        success: false,
+        message: "Wrong email/password. Try again"
+      })
+    }
+
+    req.login(user, (err) => {
+      if(err) return next(err);
+      return res.status(200).json({
+        success: true,
+        message: "Login Success"
+      })
+    })
+  })(req, res, next)
   
 })
 

@@ -13,7 +13,7 @@ module.exports = function (profile) {
       const user_id = profile.id;
       const full_name = profile.displayName || profile.username || null;
       const provider = profile.provider;
-      const email = profile["_json"].email || null;
+      const email = profile["_json"].email|| profile.username || null;
       try {
         await connection.query(
           "INSERT INTO users (user_id, provider, email, password, full_name) VALUES($1, $2, $3, $4, $5)",

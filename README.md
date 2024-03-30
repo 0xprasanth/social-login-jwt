@@ -1,2 +1,2 @@
-# starter_login
+# Social Login Integreation
 Starter repo
