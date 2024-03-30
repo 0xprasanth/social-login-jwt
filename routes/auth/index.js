@@ -40,9 +40,6 @@ authRouter.get(
   })
 );
 
-
-
-
 // local routes and register strategy
 
 
