@@ -5,8 +5,10 @@ const bcrypt = require("bcrypt");
 const connection = require("../../utils/dbInstance");
 const uuid4 = require("uuid4");
 
-// send to google server for auth
-// google router and strategy
+/** 
+  * Route for initiating authentication with Google.
+  * Redirects user to Google's authentication page.
+ */
 authRouter.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -21,8 +23,10 @@ authRouter.get(
 );
 
 
-// request twitter server for auth
-// twitter router and strategy
+/** 
+  * Route for initiating authentication with Twitter.
+  * Redirects user to Twitter's authentication page.
+ */
 authRouter.get(
   "/twitter",
   passport.authenticate("twitter")
@@ -41,15 +45,21 @@ authRouter.get(
 
 // local routes and register strategy
 
-// Handle POST request to register a new user with local authentication
+
+/**
+ * Route for registering a new user with local authentication (username and password).
+ * Handle POST request to register a new user with local authentication
+ */
 authRouter.post("/local/register", async (req, res) => {
   const password = req.body.password;
   const email = req.body.email;
   const full_name = req.body.fullname;
 
   try {
+    // Genereate hashed password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+
     const query = await connection.query(
       "INSERT INTO users (user_id, provider, email, password, full_name) VALUES ($1, $2, $3, $4, $5)",
       [uuid4().toString(), "Local", email, hashedPassword, full_name]
@@ -68,6 +78,10 @@ authRouter.post("/local/register", async (req, res) => {
   }
 });
 
+
+/**
+ * Route for logging in with local authentication (username and password).
+ */
 authRouter.post('/local/login', function handleLocalAuthentication(req, res, next){
   passport.authenticate('local', function(err, user, info){
 
@@ -80,6 +94,7 @@ authRouter.post('/local/login', function handleLocalAuthentication(req, res, nex
       })
     }
 
+    // login method for user login
     req.login(user, (err) => {
       if(err) return next(err);
       return res.status(200).json({
