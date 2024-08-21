@@ -7,18 +7,17 @@ const strategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_ID,
     clientSecret: process.env.GOOGLE_SECRET,
-    callbackURL: "http://localhost:8000/auth/google/callback",
-  }, async function (accessToken, refreshToken, profile, cb) {
+    callbackURL: `${process.env.AUTH_URL}/auth/google/callback`,
+  },
+  async function (accessToken, refreshToken, profile, cb) {
     /* 
         check if the user eith this ID exists in our database, 
         if not we register the user.
     */
     try {
-      await insertProfileDB(profile);
-    // console.log(profile)
-    } catch (error) {
-        
-    }
+      // await insertProfileDB(profile);
+      console.log(profile);
+    } catch (error) {}
     return cb(null, profile);
   }
 );

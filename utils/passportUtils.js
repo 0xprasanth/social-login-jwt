@@ -1,9 +1,10 @@
-const passport = require('passport');
+const passport = require("passport");
 
 passport.serializeUser((user, done) => {
-    done(null, user);
-})
+  console.log(user);
+  done(null, user);
+});
 
 passport.deserializeUser((user, done) => {
-    done(null, user);
-})
+  done(null);
+});
